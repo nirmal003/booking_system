@@ -30,7 +30,7 @@ mongosh        # 4+
 
 ```bash
 # 1. Clone and install
-git clone <repository-url>
+git clone https://github.com/nirmal003/booking_system.git
 cd booking_system
 npm i
 
