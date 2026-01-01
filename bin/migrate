@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+/**
+ * Database Migration Runner
+ * Runs all pending Sequelize migrations
+ */
+
+const { exec } = require('child_process');
+const path = require('path');
+
+console.log('🔄 Running database migrations...\n');
+
+const command = 'npx sequelize-cli db:migrate';
+
+exec(command, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+  if (error) {
+    console.error('❌ Migration failed:', error.message);
+    process.exit(1);
+  }
+
+  if (stderr) {
+    console.error(stderr);
+  }
+
+  console.log(stdout);
+  console.log('✅ Migrations completed successfully!\n');
+  process.exit(0);
+});

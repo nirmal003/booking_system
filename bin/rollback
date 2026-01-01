@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+/**
+ * Database Migration Rollback
+ * Undoes the last migration
+ */
+
+const { exec } = require('child_process');
+const path = require('path');
+
+console.log('⏪ Rolling back last migration...\n');
+
+const command = 'npx sequelize-cli db:migrate:undo';
+
+exec(command, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+  if (error) {
+    console.error('❌ Rollback failed:', error.message);
+    process.exit(1);
+  }
+
+  if (stderr) {
+    console.error(stderr);
+  }
+
+  console.log(stdout);
+  console.log('✅ Rollback completed successfully!\n');
+  process.exit(0);
+});

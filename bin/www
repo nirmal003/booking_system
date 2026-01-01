@@ -1,0 +1,102 @@
+#!/usr/bin/env node
+
+/**
+ * Event & Ticket System API
+ * Server Entry Point
+ */
+
+const app = require('../src/app');
+const connectMongoDB = require('../src/config/mongodb');
+const { syncDatabase } = require('../src/models/Sequelize');
+
+require('dotenv').config();
+
+/**
+ * Normalize port into a number, string, or false
+ */
+function normalizePort(val) {
+  const port = parseInt(val, 10);
+  if (isNaN(port)) return val;
+  if (port >= 0) return port;
+  return false;
+}
+
+const PORT = normalizePort(process.env.PORT || '3000');
+
+const startServer = async () => {
+  try {
+    // Sync database
+    await syncDatabase();
+    await connectMongoDB();
+    console.log('✅ MongoDB connection established');
+
+    // Start server
+    const server = app.listen(PORT, () => {
+      console.log(`
+                🚀 Server running in ${process.env.NODE_ENV || 'development'} mode
+                📡 Port: ${PORT}
+                🌐 URL: http://localhost:${PORT}
+                Security Features Enabled:
+                ✅ Helmet (Security Headers)
+                ✅ CORS Protection
+                ✅ Rate Limiting
+                ✅ XSS Protection
+                ✅ SQL Injection Protection (Sequelize)
+                ✅ NoSQL Injection Protection
+                ✅ JWT Authentication
+                `);
+    });
+
+    // Handle server errors
+    server.on('error', (error) => {
+      if (error.syscall !== 'listen') {
+        throw error;
+      }
+
+      const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT;
+
+      // Handle specific listen errors with friendly messages
+      switch (error.code) {
+        case 'EACCES':
+          console.error(`❌ ${bind} requires elevated privileges`);
+          process.exit(1);
+          break;
+        case 'EADDRINUSE':
+          console.error(`❌ ${bind} is already in use`);
+          process.exit(1);
+          break;
+        default:
+          throw error;
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Failed to start server:', error.message);
+    process.exit(1); // PM2 will restart
+  }
+};
+
+// Start the server
+startServer();
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+  console.error('❌ Unhandled Promise Rejection:', err.message);
+  process.exit(1); // PM2 will restart
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err.message);
+  process.exit(1); // PM2 will restart
+});
+
+process.on('SIGTERM', () => {
+  console.log('❌ SIGTERM received. Shutting down gracefully...');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('❌ SIGINT received. Shutting down gracefully...');
+  process.exit(0);
+});

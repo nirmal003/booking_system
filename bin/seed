@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+/**
+ * Database Seeder Script
+ * Populate database with initial/test data
+ */
+
+const { execSync } = require('child_process');
+const path = require('path');
+
+console.log('🌱 Running database seeders...\n');
+
+try {
+  // Run Sequelize seeders
+  execSync('npx sequelize-cli db:seed:all', {
+    stdio: 'inherit',
+    cwd: path.resolve(__dirname, '..')
+  });
+
+  console.log('\n✅ Seeding completed successfully!');
+  process.exit(0);
+} catch (error) {
+  console.error('\n❌ Seeding failed:', error.message);
+  process.exit(1);
+}

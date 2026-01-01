@@ -1,0 +1,68 @@
+{
+  "development": {
+    "username": "root",
+    "password": "root",
+    "database": "booking_system",
+    "host": "localhost",
+    "port": 3306,
+    "dialect": "mysql",
+    "logging": true,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    },
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "freezeTableName": false
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": "root",
+    "database": "booking_system_test",
+    "host": "localhost",
+    "port": 3306,
+    "dialect": "mysql",
+    "logging": false,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    },
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "freezeTableName": false
+    }
+  },
+  "production": {
+    "username": "${MYSQL_USER}",
+    "password": "${MYSQL_PASSWORD}",
+    "database": "${MYSQL_DATABASE}",
+    "host": "${MYSQL_HOST}",
+    "port": "${MYSQL_PORT}",
+    "dialect": "mysql",
+    "logging": false,
+    "pool": {
+      "max": 10,
+      "min": 2,
+      "acquire": 30000,
+      "idle": 10000
+    },
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "freezeTableName": false
+    },
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

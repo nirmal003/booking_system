@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+
+/**
+ * Database Reset Script
+ * Undoes all migrations, re-runs them, and seeds the database
+ */
+
+const { exec } = require('child_process');
+const path = require('path');
+
+const commands = [
+  { name: 'Undoing all migrations', cmd: 'npx sequelize-cli db:migrate:undo:all' },
+  { name: 'Running migrations', cmd: 'npx sequelize-cli db:migrate' },
+  { name: 'Seeding database', cmd: 'npx sequelize-cli db:seed:all' }
+];
+
+console.log('🔄 Resetting database...\n');
+
+function runCommand(index) {
+  if (index >= commands.length) {
+    console.log('\n✅ Database reset completed successfully!\n');
+    process.exit(0);
+    return;
+  }
+
+  const { name, cmd } = commands[index];
+  console.log(`📌 ${name}...`);
+
+  exec(cmd, { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`❌ ${name} failed:`, error.message);
+      process.exit(1);
+    }
+
+    if (stderr) {
+      console.error(stderr);
+    }
+
+    console.log(stdout);
+    runCommand(index + 1);
+  });
+}
+
+runCommand(0);
