@@ -251,7 +251,9 @@ const event = await Event.findOneAndUpdate(
 
   # for reload nginx use this command
   cd C:\nginx
+
   nginx -t
+
   nginx -s reload
 
 # PM2 for auto-restart
