@@ -249,14 +249,14 @@ const event = await Event.findOneAndUpdate(
         }
     }
 
-  # for reload nginx use this command
+# Nginx setup
   cd C:\nginx
 
   nginx -t
 
   nginx -s reload
 
-# PM2 for auto-restart
+# PM2 setup
 
   npm i -g pm2
 
