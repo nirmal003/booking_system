@@ -257,7 +257,10 @@ const event = await Event.findOneAndUpdate(
 # PM2 for auto-restart
 
   npm i -g pm2
+
   pm2 start bin/www --name booking-system -i 4
+
   pm2 list
+
   pm2 logs booking-system
 
